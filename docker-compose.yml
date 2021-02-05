@@ -24,13 +24,15 @@ services:
             - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?10.5.8-MariaDB-1:10.5.8+maria~focal
         volumes:
             - ./src:/app
-            - ./public:/app/public
+            - ./app/public:/app/public
             - ./logs:/var/log/nginx
             - ./docker/php/:/usr/local/etc/php
             - ./docker/php/ini/custom.ini:/usr/local/etc/php/conf.d/
         container_name: app
         ports:
             - "9000:9000"
+        APP_ENV: dev
+            CONTAINER_ROLE: app
 
     nginx:
         build:
