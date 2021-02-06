@@ -1,0 +1,9 @@
+{
+    "name": "docker/app",
+    "require": {},
+  "autoload": {
+    "psr-4": {
+      "App\\": "."
+    }
+  }
+}
