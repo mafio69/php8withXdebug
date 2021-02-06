@@ -31,8 +31,6 @@ services:
         container_name: app
         ports:
             - "9000:9000"
-        APP_ENV: dev
-            CONTAINER_ROLE: app
 
     nginx:
         build:
@@ -49,3 +47,12 @@ services:
         ports:
             - "8090:80"
         container_name: server
+
+    redis:
+        build:
+            context: docker/redis
+        volumes:
+            - './sailredis:/data'
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+        container_name: redis
