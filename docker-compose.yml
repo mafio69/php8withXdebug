@@ -38,26 +38,27 @@ services:
             context: docker/nginx
         image: nginx-mf
         volumes:
-            - ./app:/app
+            -  ./app:/app
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./docker/nginx/sites/:/etc/nginx/sites-available
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d
             - ./logs:/var/log/nginx
-            - ./public:/app/public
+            - ./docker/nginx/:/usr/local/etc/php
+
         depends_on:
             - php-fpm
         ports:
             - "8090:80"
         container_name: server
 
-    redis:
-        build:
-            context: docker/redis
-        image: redis-mf
-        container_name: redis
-        privileged: true
-        command: sh -c "./init.sh"
-        volumes:
-            - ./redisData:/data
-        ports:
-            - "6379:6379"
+#    redis:
+#        build:
+#            context: docker/redis
+#        image: redis-mf
+#        container_name: redis
+#        privileged: true
+#        command: sh -c "./init.sh"
+#        volumes:
+#            - ./redisData:/data
+#        ports:
+#            - "6379:6379"

@@ -15,6 +15,7 @@ RUN adduser \
     --uid "$USER_ID" \
     "$USER"
 
+
 WORKDIR /app
 
 CMD ["nginx"]

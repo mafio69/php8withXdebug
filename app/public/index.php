@@ -1,7 +1,13 @@
 <?php use App\Test;
 
-require '../vendor/autoload.php' ?>
+require dirname(__DIR__) . '/vendor/autoload.php';
 
+define('TEST_CONSTANTS', 1234);
+
+$is_xdebug = str_contains(__FILE__, 'xdebug');
+$extension = extension_loaded('xdebug') ? 'exists' : 'non ';
+$fullName = (new Test())->hello();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +15,12 @@ require '../vendor/autoload.php' ?>
     <title>Title</title>
 </head>
 <body>
-<h1>Hello word</h1>
+<h1>Hello word <?= $fullName ?></h1>
 
-<?php (new Test())->hello(); ?>
+<p>Extension xdebug <?= $extension ?></p>
+
+<?php
+phpinfo();
+?>
 </body>
 </html>
