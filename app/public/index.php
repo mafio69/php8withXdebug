@@ -4,7 +4,6 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 define('TEST_CONSTANTS', 1234);
 
-$is_xdebug = str_contains(__FILE__, 'xdebug');
 $extension = extension_loaded('xdebug') ? 'exists' : 'non ';
 $fullName = (new Test())->hello();
 ?>

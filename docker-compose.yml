@@ -1,10 +1,12 @@
-version: '3'
+version: '3.5'
 
 services:
     database:
         build:
             context: docker/db
         image: db-mf
+        networks:
+            - backend
         environment:
             - MYSQL_DATABASE=database
             - MYSQL_USER=test
@@ -18,15 +20,18 @@ services:
         build:
             context: docker/php
         image: php-fpm-mf
+        networks:
+            - backend
         depends_on:
             - database
         environment:
-            - APP_ENV=${APP_ENV}
-            - APP_SECRET=${APP_SECRET}
-            - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?10.5.8-MariaDB-1:10.5.8+maria~focal
+            - APP_ENV=$${APP_ENV}
+            - APP_SECRET=$${APP_SECRET}
+            - DATABASE_URL=mysql://$${DATABASE_USER}:$${DATABASE_PASSWORD}@database:3306/$${DATABASE_NAME}?10.5.8-MariaDB-1:10.5.8+maria~focal
         volumes:
             - ./app:/app
             - ./logs:/var/log/nginx
+            - ./logs/xdebug:/var/log/xdebug
             - ./docker/php/:/usr/local/etc/php
             - ./docker/php/ini/custom.ini:/usr/local/etc/php/conf.d/
         container_name: web
@@ -37,6 +42,8 @@ services:
         build:
             context: docker/nginx
         image: nginx-mf
+        networks:
+            - backend
         volumes:
             -  ./app:/app
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -53,8 +60,10 @@ services:
 
 #    redis:
 #        build:
-#            context: docker/redis
+##            context: docker/redis
 #        image: redis-mf
+#        networks:
+#             - backend
 #        container_name: redis
 #        privileged: true
 #        command: sh -c "./init.sh"
@@ -62,3 +71,6 @@ services:
 #            - ./redisData:/data
 #        ports:
 #            - "6379:6379"
+networks:
+    backend:
+        name: backend
